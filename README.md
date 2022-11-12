@@ -1,4 +1,4 @@
-# artical
+# todolist
 
 ## Project setup
 ```

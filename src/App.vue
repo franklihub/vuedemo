@@ -1,14 +1,48 @@
 <template>
-  <div id="app">
-    <keep-alive include="Home">
-      <router-view></router-view>
-    </keep-alive>
-    <van-tabbar route>
-      <van-tabbar-item icon="home-o" to="/home">标签</van-tabbar-item>
-      <van-tabbar-item icon="user-o" to="/user">标签</van-tabbar-item>
-    </van-tabbar>
-  </div>
+  <van-cell-group inset>
+    <van-field v-model="val" center clearable label="任务" placeholder="请输入" @keyup.esc="onEsc">
+      <template #button>
+        <van-button size="small" type="primary" @click="onAddTask">添加</van-button>
+      </template>
+    </van-field>
+    <hr />
+    <TodoList v-model:todoList="valList"></TodoList>
+  </van-cell-group>
 </template>
+
+<script>
+import TodoList from '@/components/TodoList/TodoList.vue'
+
+import { ref } from 'vue'
+
+export default {
+  name: 'App',
+  setup (props, ctx) {
+    const val = ref('')
+    const valList = ref([])
+    return {
+      val,
+      valList,
+      onEsc () {
+        val.value = ''
+        console.log(valList)
+      },
+      onAddTask () {
+        if (val.value !== '') {
+          const onetask = {
+            id: '' + valList.value.length,
+            name: val.value,
+            checked: false
+          }
+          valList.value.push(onetask)
+          val.value = ''
+        }
+      }
+    }
+  },
+  components: { TodoList }
+}
+</script>
 
 <style lang="less">
 #app {
@@ -17,18 +51,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin-top: 60px;
 }
-
-// nav {
-//   padding: 30px;
-
-//   a {
-//     font-weight: bold;
-//     color: #2c3e50;
-
-//     &.router-link-exact-active {
-//       color: #42b983;
-//     }
-//   }
-// }
 </style>
