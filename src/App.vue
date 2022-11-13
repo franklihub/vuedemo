@@ -10,38 +10,43 @@
   </van-cell-group>
 </template>
 
-<script>
+<script setup>
 import TodoList from '@/components/TodoList/TodoList.vue'
 
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 
-export default {
-  name: 'App',
-  setup (props, ctx) {
-    const val = ref('')
-    const valList = ref([])
-    return {
-      val,
-      valList,
-      onEsc () {
-        val.value = ''
-        console.log(valList)
-      },
-      onAddTask () {
-        if (val.value !== '') {
-          const onetask = {
-            id: '' + valList.value.length,
-            name: val.value,
-            checked: false
-          }
-          valList.value.push(onetask)
-          val.value = ''
-        }
-      }
-    }
-  },
-  components: { TodoList }
+// export default {
+//   name: 'App',
+// setup (props, ctx) {
+// const ctx = useContext()
+// ctx.name = 'App'
+const val = ref('')
+const valList = ref([])
+// return {
+//   val,
+//   valList,
+const onEsc = () => {
+  val.value = ''
+  console.log(valList)
 }
+const onAddTask = () => {
+  if (val.value !== '') {
+    const onetask = {
+      id: '' + valList.value.length,
+      name: val.value,
+      checked: false
+    }
+    valList.value.push(onetask)
+    val.value = ''
+  }
+}
+onBeforeMount(() => {
+  console.log('1-组件创建之前-----beforeCreate()')
+})
+//   }
+// },
+// components: { TodoList }
+// }
 </script>
 
 <style lang="less">
