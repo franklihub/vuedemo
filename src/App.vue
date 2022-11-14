@@ -13,15 +13,15 @@
 <script setup>
 import TodoList from '@/components/TodoList/TodoList.vue'
 
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, provide } from 'vue'
 
 // export default {
 //   name: 'App',
 // setup (props, ctx) {
 // const ctx = useContext()
 // ctx.name = 'App'
-const val = ref('')
-const valList = ref([])
+const val = ref('testval')
+const valList = ref(['testvalList'])
 // return {
 //   val,
 //   valList,
@@ -40,6 +40,9 @@ const onAddTask = () => {
     val.value = ''
   }
 }
+
+provide('valList', valList)
+provide('val', val)
 onBeforeMount(() => {
   console.log('1-组件创建之前-----beforeCreate()')
 })

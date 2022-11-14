@@ -5,14 +5,21 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 export default {
   name: 'TodoList',
   props: {
     todoList: ref([])
   },
   setup (props, ctx) {
-    const checkedList = ref([])
+    const checkedList = inject('valList')
+    console.log('inject:', checkedList)
+    const checkedVal = inject('val')
+    console.log('inject:', checkedVal)
+    /// /
+    checkedList.value = ['subcheckedlist']
+    checkedVal.value = 'subcheckedval'
+    // ctx.emit('update:todoList', ['subtodolist'])
     return {
       checkedList,
       onChange () {
