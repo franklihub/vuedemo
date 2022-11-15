@@ -1,64 +1,52 @@
 <template>
-  <van-cell-group inset>
-    <van-field v-model="val" center clearable label="任务" placeholder="请输入" @keyup.esc="onEsc">
-      <template #button>
-        <van-button size="small" type="primary" @click="onAddTask">添加</van-button>
-      </template>
-    </van-field>
-    <hr />
-    <TodoList v-model:todoList="valList"></TodoList>
-  </van-cell-group>
+  <Header></Header>
+  <keep-alive>
+    <div class="goods-container">
+      <Goods
+        class="goods"
+        v-for="item in goodList"
+        :key="item.id"
+        :num="item.goods_count"
+        :title="item.goods_name"
+        :price="item.goods_price"
+        :thumb="item.goods_img"
+        @upnum="(val) =>item.goods_count = val"
+      ></Goods>
+    </div>
+  </keep-alive>
+  <Footer class="footer"></Footer>
 </template>
 
 <script setup>
-import TodoList from '@/components/TodoList/TodoList.vue'
+import Header from '@/components/Header/Header.vue'
+import Goods from '@/components/Goods/Goods.vue'
+import Footer from '@/components/Footer/Footer.vue'
 
-import { ref, onBeforeMount, provide } from 'vue'
-
-// export default {
-//   name: 'App',
-// setup (props, ctx) {
-// const ctx = useContext()
-// ctx.name = 'App'
-const val = ref('testval')
-const valList = ref(['testvalList'])
-// return {
-//   val,
-//   valList,
-const onEsc = () => {
-  val.value = ''
-  console.log(valList)
+import { onBeforeMount, ref, getCurrentInstance } from 'vue'
+const { proxy } = getCurrentInstance()
+const goodList = ref([])
+const getGoods = async () => {
+  const { data: res } = await proxy.$http.get()
+  return res.list
 }
-const onAddTask = () => {
-  if (val.value !== '') {
-    const onetask = {
-      id: '' + valList.value.length,
-      name: val.value,
-      checked: false
-    }
-    valList.value.push(onetask)
-    val.value = ''
-  }
-}
-
-provide('valList', valList)
-provide('val', val)
-onBeforeMount(() => {
-  console.log('1-组件创建之前-----beforeCreate()')
+getGoods().then((reason) => {
+  console.log(reason)
+  goodList.value = reason
 })
-//   }
-// },
-// components: { TodoList }
-// }
+onBeforeMount(() => {
+  console.log('1-创建---goods')
+})
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  .goods-container {
+    padding: 46px 0 50px 0;
+  }
 }
 </style>
