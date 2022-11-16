@@ -11,13 +11,13 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, toRefs, ref, watch, toRef } from 'vue'
+import { defineProps, defineEmits, toRefs, watch, ref, toRef } from 'vue'
 const props = defineProps({
-  num: ref(0),
-  price: ref(0),
-  desc: ref(''),
-  title: ref(''),
-  thumb: ref('')
+  num: Number,
+  price: Number,
+  desc: String,
+  title: String,
+  thumb: String
 })
 const emit = defineEmits(['upnum'])
 const { price, desc, title, thumb } = toRefs(props)
